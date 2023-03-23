@@ -1,51 +1,37 @@
-import java.io.*;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st;
+        int n = sc.nextInt();
 
-        int n = Integer.parseInt(br.readLine());
-
-        for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
-            int x1 = Integer.parseInt(st.nextToken());
-            int y1 = Integer.parseInt(st.nextToken());
-            int r1 = Integer.parseInt(st.nextToken());
-
-            int x2 = Integer.parseInt(st.nextToken());
-            int y2 = Integer.parseInt(st.nextToken());
-            int r2 = Integer.parseInt(st.nextToken());
-
-            double d = Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2));
-
-            if(d==0) {
-                // 중심이 같을때
-                // 반지름이 같은 경우 (두 원이 완전히 겹침)
-                if (r1==r2) {
-                    sb.append(-1+"\n");
-                }
-                // 반지름이 다른경우 (원 안에 원)
-                else {
-                    sb.append(0+"\n");
-                }
+        for(int i=0;i<n;i++) {
+            ArrayList<Integer> number = new ArrayList<>();
+            for (int j = 0; j < 6; j++) {
+                number.add(sc.nextInt());
             }
-            // 중심이 다를때
-            else {
-                // 두 교점
-                if(Math.abs(r1-r2)<d && d<r1+r2) {
+
+            double distance = Math.sqrt(Math.pow(number.get(0)-number.get(3),2)
+                    + Math.pow(number.get(1)-number.get(4),2));
+
+            if(distance==0){ //중심이 같을 때
+                //반지름이 같음 (완전히 겹침)
+                if(Objects.equals(number.get(2), number.get(5))) sb.append(-1+"\n");
+                //만나지 않음. 원 원
+                else sb.append(0+"\n");
+            }
+            else{ //중심이 다를 때
+                //교점 2개
+                if(distance > Math.abs(number.get(2)-number.get(5)) && distance < number.get(2)+number.get(5)) {
                     sb.append(2+"\n");
                 }
-                // 한 교점 (내접, 외접)
-                else if(d==r1+r2 || Math.abs(r1-r2)==d) {
+                //교점 1개
+                else if(distance == number.get(2)+number.get(5) || distance == Math.abs(number.get(2)-number.get(5)))
                     sb.append(1+"\n");
-                }
-                // 접하지 않을때
-                else {
-                    sb.append(0+"\n");
-                }
+                //교점 0개
+                else sb.append(0+"\n");
             }
         }
         System.out.println(sb);
