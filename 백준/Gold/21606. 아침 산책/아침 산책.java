@@ -8,13 +8,13 @@ public class Main {
     static int[] inOut;
     static boolean[] visited;
     static int n;
-    static int count = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         n = Integer.parseInt(br.readLine());
         inOut = new int[n+1];
+        int route_count = 0;
 
         graph = new ArrayList<>();
         for(int i=0;i<=n;i++){
@@ -32,32 +32,41 @@ public class Main {
             int to = Integer.parseInt(st.nextToken());
             graph.get(from).add(to);
             graph.get(to).add(from);
-        }
 
-        for(int i=1;i<=n;i++){
-            visited = new boolean[n+1]; //각 정점마다 방문 초기화
-            //시작이 실내이면
-            if(inOut[i]==1) {
-                dfs(i);
+            if(inOut[from]==1 && inOut[to]==1){ //실내끼리 인접하면 경로를 2개 더함
+                route_count += 2;
             }
         }
 
-        System.out.println(count);
+        visited = new boolean[n+1];
+        for(int i=1;i<=n;i++){
+            int in = 0; //실내의 수
+            if(inOut[i]==0) {
+                if(!visited[i]){
+                    visited[i] = true;
+                    in = dfs(i);
+                }
+            }
+            route_count += in*(in-1);
+        }
+
+        System.out.println(route_count);
     }
-    private static void dfs(int start) {
-        visited[start] = true;
+    private static int dfs(int start) {
+        int in = 0;
 
         for(int v : graph.get(start)){
-            //중간에 모두 야외이며 마지막은 실내로 끝나야 함.
-            //야외이면 계속 탐색. - 실내이면 count++
-            if(!visited[v]){
-                if(inOut[v]==0){
-                    dfs(v);
-                }
-                else{
-                    count++;
+            if(inOut[v]==0){
+                if(!visited[v]) {
+                    visited[v] = true;
+                    in += dfs(v);
                 }
             }
+            else{
+                in++;
+            }
         }
+
+        return in;
     }
 }
