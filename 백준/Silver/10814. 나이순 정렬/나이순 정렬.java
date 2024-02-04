@@ -11,6 +11,11 @@ class Member{
         this.age = age;
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return age + " " + name +"\n";
+    }
 }
 
 public class Main {
@@ -36,14 +41,10 @@ public class Main {
             }
         });
 
+        StringBuilder sb = new StringBuilder();
         for(Member m : members) {
-            System.out.print(m.age + " " + m.name);
-            System.out.println();
+            sb.append(m);
         }
-    }
-
-
-    private static void solution() {
-
+        System.out.println(sb);
     }
 }
