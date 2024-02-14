@@ -34,7 +34,7 @@ public class Main {
                 if(students.get(j) > students.get(i)){
                     int temp = students.remove(i);
                     students.add(j, temp);
-                    result += (Math.abs(i-j));
+                    result += i-j;
                     break;
                 }
             }
