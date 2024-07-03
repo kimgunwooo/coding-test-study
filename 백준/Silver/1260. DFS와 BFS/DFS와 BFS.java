@@ -1,61 +1,80 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
+/**
+ *
+ */
+
 public class Main {
-    static int[][] graph = new int[1001][1001];
-    static boolean[] visited = new boolean[1001];
-    static int n;
+	public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	public static StringBuilder sb = new StringBuilder();
+	public static StringTokenizer st;
+	public static int N;
+	public static boolean[] visited;
+	public static Queue<Integer> queue = new LinkedList<>();
+	public static List<List<Integer>> graph = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        n = Integer.parseInt(st.nextToken()); //정점
-        int m = Integer.parseInt(st.nextToken()); //간선
-        int v = Integer.parseInt(st.nextToken()); //시작정점
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine()," ");
+		N = Integer.parseInt(st.nextToken()); // 정점의 개수
+		int M = Integer.parseInt(st.nextToken()); // 간선의 개수
+		int V = Integer.parseInt(st.nextToken()); // 탐색을 시작할 정점의 번호
 
-        for(int i=0;i<m;i++){
-            st = new StringTokenizer(br.readLine()," ");
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            init(a,b);
-        }
+		for(int i=0;i<N+1;i++) {
+			graph.add(new ArrayList<>());
+		}
+		visited = new boolean[N+1];
 
-        dfs(v);
-        System.out.println();
-        bfs(v);
-    }
-    static void init(int a, int b){
-        graph[a][b] = graph[b][a] = 1;
-    }
-    static void dfs(int node){
-        visited[node] = true;
-        System.out.print(node + " ");
+		for(int i=0;i<M;i++) {
+			st = new StringTokenizer(br.readLine()," ");
+			int node = Integer.parseInt(st.nextToken());
+			int edge = Integer.parseInt(st.nextToken());
+			graph.get(node).add(edge);
+			graph.get(edge).add(node);
+		}
 
-        for(int i=1;i<=n;i++){
-            if(!visited[i] && graph[node][i] == 1){
-                dfs(i);
-            }
-        }
-    }
-    static void bfs(int node){
-        visited = new boolean[1001];
-        Queue<Integer> queue = new LinkedList<>();
-        visited[node] = true;
-        queue.add(node);
+		for(int i=0;i<N+1;i++) {
+			Collections.sort(graph.get(i));
+		}
 
-        while(!queue.isEmpty()){
-            int v = queue.remove();
-            System.out.print(v + " ");
+		solution(V);
+		System.out.println(sb);
+	}
 
-            for(int i=1;i<=n;i++){
-                if(!visited[i] && graph[v][i] == 1){
-                    visited[i] = true;
-                    queue.add(i);
-                }
-            }
-        }
-    }
+	private static void solution(int v) {
+		dfs(v);
+		sb.append("\n");
+		bfs(v);
+		sb.append("\n");
+	}
+
+	private static void dfs(int v) {
+		visited[v] = true;
+		sb.append(v).append(" ");
+
+		for(int node : graph.get(v)) {
+			if(!visited[node])
+				dfs(node);
+		}
+	}
+
+	private static void bfs(int v) {
+		visited = new boolean[N+1];
+
+		queue.offer(v);
+		visited[v] = true;
+
+		while(!queue.isEmpty()) {
+			int target = queue.poll();
+			sb.append(target).append(" ");
+
+			for(int node : graph.get(target)) {
+				if(!visited[node]) {
+					queue.offer(node);
+					visited[node] = true;
+				}
+			}
+		}
+	}
 }
