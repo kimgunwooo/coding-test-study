@@ -7,19 +7,30 @@ class Solution {
     public static int count = 0;
     
     public int solution(int[] numbers, int target) {
-        dfs(numbers, 0, 0, target);
+        int result = dfs(numbers, 0, 0, target);
         
-        return count;
+        return result;
     }
     
-    public void dfs(int[] numbers, int idx, int value, int target) {
+//     public void dfs(int[] numbers, int idx, int value, int target) {
+//         if (numbers.length == idx) {
+//             if (value == target)
+//                 count++;
+//             return;
+//         }
+        
+//         dfs(numbers, idx + 1, value + numbers[idx], target);
+//         dfs(numbers, idx + 1, value - numbers[idx], target);
+//     }
+    
+    public int dfs(int[] numbers, int idx, int value, int target) {
         if (numbers.length == idx) {
             if (value == target)
-                count++;
-            return;
+                return 1;
+            return 0;
         }
         
-        dfs(numbers, idx + 1, value + numbers[idx], target);
-        dfs(numbers, idx + 1, value - numbers[idx], target);
+        return dfs(numbers, idx + 1, value + numbers[idx], target) + 
+            dfs(numbers, idx + 1, value - numbers[idx], target);
     }
 }
