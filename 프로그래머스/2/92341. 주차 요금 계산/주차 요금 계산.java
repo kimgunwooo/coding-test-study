@@ -21,6 +21,7 @@ class Solution {
         }
         
         for (int number : new ArrayList<>(map.keySet())) { // 출차된 내역이 없는 경우
+            System.out.println("출차 된 내역이 없는 번호 : " + number);
             if (map.containsKey(number)) {
                 String inTime = map.get(number);
                 timeProcessing(inTime, "23:59", number);
