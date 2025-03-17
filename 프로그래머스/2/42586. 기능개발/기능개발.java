@@ -37,7 +37,6 @@ class Solution {
         int pre = queue.poll();
         while (!queue.isEmpty()) {
             int next = queue.poll();
-            System.out.println(next);
             if (next > pre) {
                 resultList.add(idx);
                 idx = 1;
@@ -46,7 +45,6 @@ class Solution {
                 idx++;
             }
         }
-        
         resultList.add(idx);
         
         int[] answer = new int[resultList.size()];
