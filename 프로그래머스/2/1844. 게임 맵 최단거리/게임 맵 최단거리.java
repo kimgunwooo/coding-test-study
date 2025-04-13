@@ -15,8 +15,6 @@ class Solution {
         int n = maps.length;
         int m = maps[0].length;
         boolean[][] visited = new boolean[n][m];
-        int min = 999_999;
-        boolean flag = false;
         
         q.offer(new int[]{x,y,1});
         visited[x][y] = true;
@@ -33,18 +31,17 @@ class Solution {
                 
                 if (nx < 0 || ny < 0 || nx >= n || ny >= m || visited[nx][ny]) continue;
                 
+                if (nx == n-1 && ny == m-1) {
+                    return cnt+1;
+                }
+                
                 if (maps[nx][ny] == 1) {
                     q.offer(new int[]{nx, ny, cnt+1});
                     visited[nx][ny] = true;
-                    
-                    if (nx == n-1 && ny == m-1) {
-                        flag = true;
-                        min = Math.min(min, cnt+1);
-                    }
                 }
             }
         }
         
-        return flag ? min : -1;
+        return -1;
     }
 }
